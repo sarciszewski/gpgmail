@@ -22,7 +22,7 @@ if (isset($_POST['from']) && isset($_POST['message'])) {
 
     $email = Mail::factory('mail');
     $email->send(
-        [OUR_EMAIL_ADDRESS], // Just for the lulz
+        [OUR_EMAIL_ADDRESS],
         ['From' => 'Contact Form <contact@anonymo.us>'],
         $ciphertext
     );
