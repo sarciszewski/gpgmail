@@ -1,11 +1,10 @@
 <?php
-define('BASE', __DIR__);
-putenv('GNUPGHOME='.BASE.'/.gnupg');
-touch(BASE.'/.gnupg');
-chown(BASE.'/.gnupg', 'www-data');
-chmod(BASE.'/.gnupg', 0700);
+require "Crypt/GPG.php";
 
-$gpg = new gnupg();
-$data = $gpg->import(file_get_contents(BASE.'/public/public.asc'));
-
-file_put_contents(BASE."/public/public.asc.fp", $info['fingerprint']);
+$gpg = new Crypt_GPG(
+    array(
+        'homedir' => __DIR__
+    )
+);
+$import = $gpg->importKeyFile(__DIR__.'/public.asc');
+var_dump($import);

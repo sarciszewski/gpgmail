@@ -1,12 +1,15 @@
 <?php
 require "Mail.php";
 require "Mail_Mime.php";
+require "Crypt/GPG.php";
 
 define('BASE', dirname(__DIR__));
 
 if (isset($_POST['from']) && isset($_POST['message'])) {
-	$gpg = new gnupg();
-	$gpg->addencryptionkey(file_get_contents('public.asc.fp'));
+	$gpg = new Crypt_GPG(array(
+        'homedir' => BASE
+    ));
+    $gpg->importKeyFile(__DIR__.'/public.asc');
 	
 	$ciphertext = $gpg->encrypt(
 		"From: {$_POST['from']}\n\nMessage:\n{$_POST['message']}"
@@ -14,7 +17,7 @@ if (isset($_POST['from']) && isset($_POST['message'])) {
 	
 	$email = Mail::factory('mail');
 	$email->send(
-		['Scott Arciszewski <scott@arciszewski.me>', 'tao@nsa.gov'], // Just for the lulz
+		[$email], // Just for the lulz
 		['From' => 'Contact Form <contact@anonymo.us>'],
 		$ciphertext
 	);
