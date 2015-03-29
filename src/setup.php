@@ -6,5 +6,5 @@ $gpg = new Crypt_GPG(
         'homedir' => __DIR__
     )
 );
-$import = $gpg->importKeyFile(__DIR__.'/public.asc');
+$import = $gpg->importKeyFile(__DIR__.'/public/public.asc');
 var_dump($import);
